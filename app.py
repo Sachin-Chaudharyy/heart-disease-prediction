@@ -114,7 +114,7 @@ input_encoded[numerical_cols] = scaler.transform(input_encoded[numerical_cols])
 # =========================
 if st.button("🔍 Predict Heart Disease"):
     prediction = model.predict(input_encoded)[0]
-    prob = model.predict_proba(input_data)[0][1]
+    prob = model.predict_proba(input_encoded)[0][1]
 
     if prediction == 1:
         st.error("⚠️ High Risk of Heart Disease (Probability: {prob:.2f})")
