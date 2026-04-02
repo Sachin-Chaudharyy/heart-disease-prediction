@@ -2,6 +2,7 @@
 
 This project is a Machine Learning web application that predicts the likelihood of heart disease based on patient clinical data. It uses a Random Forest Classifier and a Streamlit interface.
 
+Live Demo: https://heart-disease-predictor-0.streamlit.app/
 Model Performance:
 - Algorithm: Random Forest Classifier
 - Accuracy: 77%
