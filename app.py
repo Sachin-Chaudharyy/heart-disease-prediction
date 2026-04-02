@@ -117,9 +117,9 @@ if st.button("🔍 Predict Heart Disease"):
     prob = model.predict_proba(input_encoded)[0][1]
 
     if prediction == 1:
-        st.error("⚠️ High Risk of Heart Disease (Probability: {prob:.2f})")
+        st.error(f"⚠️ High Risk of Heart Disease (Probability: {prob:.2f})")
     else:
-        st.success("✅ No Strong Signs of Heart Disease (Probability: {prob:.2f})")
+        st.success(f"✅ No Strong Signs of Heart Disease (Probability: {prob:.2f})")
 
 st.caption("Developed by Sachin Chaudhary | © 2026 | Machine Learning Project")
 
