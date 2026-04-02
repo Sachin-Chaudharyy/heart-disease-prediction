@@ -36,10 +36,10 @@ col1, col2 = st.columns(2)
 # Mapping dictionaries
 gender_map = {"Female": 0, "Male": 1}
 chest_pain_map = {
-    "Typical Angina": 0,
+    "Asymptomatic": 0,
     "Atypical Angina": 1,
     "Non-Anginal Pain": 2,
-    "Asymptomatic": 3
+    "Typical Angina": 3
 }
 fasting_bs_map = {"No": 0, "Yes": 1}
 resting_ecg_map = {
@@ -49,7 +49,7 @@ resting_ecg_map = {
 }
 exercise_angina_map = {"No": 0, "Yes": 1}
 st_slope_map = {"Upsloping": 0, "Flat": 1, "Downsloping": 2}
-thalassemia_map = {"Normal": 1, "Fixed Defect": 2, "Reversible Defect": 3}
+thalassemia_map = {"Unknown": 0,"Normal": 1, "Fixed Defect": 2, "Reversible Defect": 3}
 major_vessels_map = {"0": 0, "1": 1, "2": 2, "3": 3}
 
 with col1:
