@@ -111,7 +111,7 @@ input_encoded = pd.get_dummies(input_df, columns=categorical_cols, drop_first=Tr
 input_encoded = input_encoded.reindex(columns=expected_encoded, fill_value=0)
 
 # Scale numerical features
-input_encoded[numerical_cols] = scaler.transform(input_encoded[numerical_cols])
+input_encoded[numerical_cols] = scaler.transform(input_encoded[numerical_cols].values)
 
 # =========================
 # Prediction
