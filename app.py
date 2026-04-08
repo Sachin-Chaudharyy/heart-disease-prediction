@@ -161,6 +161,7 @@ input_dict = {
     "ST_Slope": ST_Slope
 }
 
+
 feature_names_map = {
     "Age": "Age",
     "Gender": "Gender (Male)",
@@ -232,10 +233,24 @@ if st.button("🔍 Predict Heart Disease"):
             st.info("Feature importance not available for this model.")
 
 
+    report_dict = {
+    "Age": Age,
+    "Gender": Gender_display,
+    "Chest Pain Type": ChestPainType_display,
+    "Resting Blood Pressure": RestingBP,
+    "Cholesterol": Cholesterol,
+    "Fasting Blood Sugar >120 mg/dl": FastingBS_display,
+    "Resting ECG": RestingECG_display,
+    "Max Heart Rate": MaxHR,
+    "Exercise-Induced Angina": ExerciseAngina_display,
+    "ST Depression": ST_Depression,
+    "ST Slope": ST_Slope_display,
+    "Predicted Risk (%)": f"{risk:.1f}%",
+    "Recommendation": recommendation
+    }
     st.markdown("### 📥 Download Report")
 
-    report_df = pd.DataFrame([input_dict])
-    report_df['Predicted Risk (%)'] = risk
+    report_df = pd.DataFrame([report_dict])
     csv = report_df.to_csv(index=False)
 
     col1, col2 = st.columns(2)
@@ -254,12 +269,10 @@ if st.button("🔍 Predict Heart Disease"):
     pdf.set_font("Arial",'',12)
     pdf.ln(10)
 
-    for key, value in input_dict.items():
-        pdf.cell(0, 8, f"{key}: {value}", ln=True)
+    for key, value in report_dict.items():
+        pdf.multi_cell(0, 8, f"{key}: {value}")
 
     pdf.ln(5)
-    pdf.cell(0, 10, f"Predicted Risk: {risk:.2f}%", ln=True)
-    pdf.cell(0, 10, f"Recommendation: {recommendation}", ln=True)
     pdf_output = pdf.output(dest='S').encode('latin-1')
     col2.download_button("📥 Download Report (PDF)", pdf_output, file_name="heart_report.pdf")
 
