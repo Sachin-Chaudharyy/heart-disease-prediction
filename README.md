@@ -27,6 +27,7 @@ This is a Machine Learning web application built using Streamlit that predicts t
 
 # Dataset Download Link
 - https://www.kaggle.com/datasets/eishkaran/heart-disease
+- or you can simply download from my repository 
 
 # Project Structure
 ├── app.py
