@@ -181,6 +181,35 @@ feature_names_map = {
     "ST_Slope_2": "ST Slope: Downsloping"
 }
 
+def analyze_parameters(data):
+    issues = []
+
+    if data["RestingBP"] > 130:
+        issues.append("⚠️ Blood Pressure is HIGH")
+    elif data["RestingBP"] < 90:
+        issues.append("⚠️ Blood Pressure is LOW")
+
+    if data["Cholesterol"] > 240:
+        issues.append("⚠️ Cholesterol is HIGH")
+    elif data["Cholesterol"] < 150:
+        issues.append("⚠️ Cholesterol is LOW")
+
+    if data["MaxHR"] < 90:
+        issues.append("⚠️ Heart Rate is LOW")
+    elif data["MaxHR"] > 180:
+        issues.append("⚠️ Heart Rate is HIGH")
+
+    if data["ST_Depression"] > 2:
+        issues.append("⚠️ ST Depression is HIGH (possible abnormality)")
+
+    if data["FastingBS"] == 1:
+        issues.append("⚠️ Blood Sugar is HIGH")
+
+    if data["ExerciseAngina"] == 1:
+        issues.append("⚠️ Exercise-induced Angina present")
+
+    return issues
+
 input_df = pd.DataFrame([input_dict])
 
 # One-hot encode categorical columns
@@ -212,6 +241,15 @@ if st.button("🔍 Predict Heart Disease"):
         
     st.info(f"💡 Recommendation: {recommendation}")
     st.progress(risk/100)
+    issues = analyze_parameters(input_dict)
+
+    st.markdown("### ⚠️ Health Parameter Analysis")
+
+    if issues:
+        for issue in issues:
+            st.warning(issue)
+    else:
+        st.success("✅ All parameters are within normal range")
 
     with st.expander("📊 View Risk Distribution"):
             labels = ['No Heart Disease', 'Heart Disease']
