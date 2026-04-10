@@ -103,7 +103,7 @@ st.warning("""
 ⚠️ **Important:** This prediction is for educational purposes only and **does not replace professional medical advice**.  
 Please consult a qualified doctor for a proper diagnosis and treatment.
 """)
-st.markdown("Developed by **Sachin Chaudhary** | Machine Learning Project | © 2025")
+st.markdown("Developed by **Sachin Chaudhary** | Machine Learning Project | © 2026")
 st.markdown("❤️ 💓 💊 🏥")
 st.markdown("---")
 
@@ -222,13 +222,76 @@ if st.button("🔍 Predict Heart Disease"):
             ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
             ax.axis('equal')
             st.pyplot(fig, use_container_width=False)
+
+
     with st.expander("📉 See Risk Factors"):
         importance = getattr(model, "coef_", None)
 
         if importance is not None:
-            importance = pd.Series(importance[0], index=input_encoded.columns) 
-            importance.index = importance.index.map(lambda x: feature_names_map.get(x, x))
-            st.bar_chart(importance.sort_values(ascending=False))
+            importance = pd.Series(importance[0], index=input_encoded.columns)
+
+
+            clean_data = {}
+
+            for col, val in importance.items():
+
+                # Chest Pain (only show selected one)
+                if col.startswith("ChestPainType_"):
+                    if input_encoded[col].values[0] == 1:
+                        name = {
+                            "ChestPainType_1": "Chest Pain: Atypical",
+                            "ChestPainType_2": "Chest Pain: Non-Anginal",
+                            "ChestPainType_3": "Chest Pain: Asymptomatic"
+                        }.get(col, col)
+                        clean_data[name] = val
+
+                # ST Slope
+                elif col.startswith("ST_Slope_"):
+                    if input_encoded[col].values[0] == 1:
+                        name = {
+                            "ST_Slope_1": "ST Slope: Flat",
+                            "ST_Slope_2": "ST Slope: Downsloping"
+                        }.get(col, col)
+                        clean_data[name] = val
+
+                # ECG
+                elif col.startswith("RestingECG_"):
+                    if input_encoded[col].values[0] == 1:
+                        name = {
+                            "RestingECG_1": "ECG: ST-T Abnormality",
+                            "RestingECG_2": "ECG: Hypertrophy"
+                        }.get(col, col)
+                        clean_data[name] = val
+
+                # Normal features
+                else:
+                    name_map = {
+                        "Age": "Age",
+                        "Gender": "Gender (Male)",
+                        "RestingBP": "Blood Pressure",
+                        "Cholesterol": "Cholesterol",
+                        "MaxHR": "Max Heart Rate",
+                        "ST_Depression": "ST Depression",
+                        "FastingBS": "High Blood Sugar",
+                        "ExerciseAngina": "Exercise Angina"
+                    }
+                    clean_data[name_map.get(col, col)] = val
+
+            clean_series = pd.Series(clean_data)
+
+            clean_series = clean_series.sort_values()
+
+            fig, ax = plt.subplots()
+
+            ax.barh(clean_series.index, clean_series.values)
+
+            ax.set_xlabel("Impact on Risk")
+            ax.set_title("Key Risk Factors (Based on Your Input)")
+
+            plt.tight_layout()
+
+            st.pyplot(fig, use_container_width=True)
+
         else:
             st.info("Feature importance not available for this model.")
 
